@@ -4,7 +4,7 @@
 
 独立复制自 https://lishiyi-aia.github.io/market-trainee-finetoday/ ，保留原站版式、3D 场景、滚动交互与案例素材。原网站及其仓库保持不变。
 
-新站：https://lishiyi-aia.github.io/shanghai-qichuang-market-assistant/
+新站：https://lishiyi-aia.github.io/qichuang/
 
 三个项目与2026年10月15日最新简历对应：
 

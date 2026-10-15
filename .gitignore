@@ -7,3 +7,4 @@ qa/
 github-publication.json
 github-publish.mjs
 original-source-hashes.json
+github-shorten.mjs
