@@ -423,6 +423,9 @@ function Man2({
     // 2b) 拷贝 glb 相机世界变换到默认相机，并绕焦点做轨道式鼠标视差（焦点屏幕位置不变）
     const camera: any = get().camera
     if (glbCam && camera.isPerspectiveCamera) {
+      const portraitHero = window.innerHeight > window.innerWidth
+        ? 1 - THREE.MathUtils.smoothstep(frame, 0, FRAMES_PER_NODE)
+        : 0
       glbCam.updateWorldMatrix(true, false)
       glbCam.matrixWorld.decompose(camPos.current, camQuat.current, camScl.current)
       // 鼠标缓动：无限趋近目标值
@@ -437,11 +440,19 @@ function Man2({
         .copy(camPos.current)
         .sub(focusRef.current)
         .applyQuaternion(paraQuat.current)
-      // 移动端沿「焦点→相机」方向整体拉远：焦点屏幕位置不变，主体更小、留白更多
-      if (isMobile.current) tmpVec.current.multiplyScalar(cam.mobilePullback)
+      // 首屏保留完整人物比例，进入履历时再平滑拉远，给文字留出空间。
+      if (isMobile.current) {
+        const pullback = THREE.MathUtils.lerp(1, cam.mobilePullback, THREE.MathUtils.smoothstep(frame, 0, FRAMES_PER_NODE))
+        tmpVec.current.multiplyScalar(pullback)
+      }
+      tmpVec.current.multiplyScalar(THREE.MathUtils.lerp(1, 0.96, portraitHero))
       tmpVec.current.add(focusRef.current)
       camera.position.copy(tmpVec.current)
       camera.quaternion.multiplyQuaternions(paraQuat.current, camQuat.current)
+      if (portraitHero > 0) {
+        const viewHeight = 2 * camera.position.distanceTo(focusRef.current) * Math.tan(THREE.MathUtils.degToRad(glbCam.fov / 2))
+        camera.translateY(viewHeight * 0.025 * portraitHero)
+      }
       // 移动端「时间轴阶段」把镜头整体左移，让主体从满宽文字后错开。
       // 权重：从 Hero 渐入(s: -0.8→0.3)、进入作品区随 smoothOff 渐出 → 无跳变。
       if (isMobile.current && cam.mobileTimelineShift !== 0) {

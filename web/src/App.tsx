@@ -26,22 +26,20 @@ type Lang = 'en' | 'zh'
 const COPY = {
   en: {
     title: 'About Shiyi',
-    application: 'Applying to 上海企创信息科技有限公司 · Marketing Assistant',
     paragraphs: [
-      "Shiyi Li · 2027 Master of Marketing candidate. Experience in campaign preparation, on-site support, social content and promotional materials. I use performance reviews and AI-assisted dashboards to turn feedback into the next round of content and campaign improvements.",
+      "Shiyi Li · Applying to 上海企创信息科技有限公司 for Marketing Assistant. A 2027 Master of Marketing candidate with working English and experience in campaign execution, promotional materials and social content. I use AI-assisted dashboards and performance reviews to improve the next round of content and campaigns.",
     ],
   },
   zh: {
     title: 'About Shiyi',
-    application: '应聘上海企创信息科技有限公司｜市场助理',
     paragraphs: [
-      '李世怡｜2027届市场营销硕士，英语可作工作语言。具备活动筹备与现场执行、宣传文案、物料整理及新媒体维护经验，运用 AI 辅助制作运营看板、整理数据，将活动反馈与传播表现用于下一轮内容和执行调整。',
+      '李世怡｜应聘上海企创信息科技有限公司市场助理。2027届市场营销硕士，英语可作工作语言。具备市场调研、宣传物料、活动执行与渠道协作经验，借助 AI 制作内容和运营看板，整理传播数据与用户反馈，将复盘结果带回下一轮内容和推广。',
     ],
   },
 }
 
 function Hero({ lang, cueOpacity }: { lang: Lang; cueOpacity: MotionValue<number> }) {
-  const { title, application, paragraphs } = COPY[lang]
+  const { title, paragraphs } = COPY[lang]
   const aboutRef = useRef(null)
   // 从实际滚动开始淡出，确保增加应聘信息后首屏仍保持清晰。
   const { scrollY: heroScrollY } = useScroll()
@@ -60,7 +58,6 @@ function Hero({ lang, cueOpacity }: { lang: Lang; cueOpacity: MotionValue<number
       >
         {/* 入场动画放内层，避免其 fill 锁住 opacity 覆盖外层滚动 opacity */}
         <div className="about-intro">
-          <motion.p className="application-target" style={{ y: bodyY }}>{application}</motion.p>
           <motion.h1 className="about-title" style={{ y: titleY, letterSpacing: titleSpacing }}>
             {title}
           </motion.h1>
